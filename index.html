@@ -1,40 +1,267 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="bn">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="Stream movies, IPTV, blogs, and more with MimFlix.">
-    <meta name="keywords" content="Movies, IPTV, Blogs, Streaming, Entertainment">
-    <meta name="author" content="MimFlix Team">
-    <title>MimFlix - Stream Movies, IPTV & Blogs</title>
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
-    <link rel="stylesheet" href="css/styles.css">
-    <link rel="icon" href="images/favicon.ico">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="description" content="MimFlix is your ultimate entertainment platform for movies, blogs, and IPTV. Get the best movies and stay updated with tech and cinema trends.">
+    <meta name="keywords" content="entertainment, movies, blogs, IPTV, tech trends, cinema revolution">
+    <meta name="author" content="MimFlix">
+    <meta property="og:title" content="MimFlix - Entertainment Platform">
+    <meta property="og:description" content="MimFlix is your ultimate destination for entertainment, featuring movies, blogs, and IPTV.">
+    <meta property="og:image" content="./logo.svg">
+    <meta property="og:url" content="https://www.mimflix.com">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="MimFlix - Entertainment Platform">
+    <meta name="twitter:description" content="MimFlix offers the best in movies, blogs, and IPTV. Stay updated with the latest trends and enjoy endless entertainment.">
+    <meta name="twitter:image" content="./logo.svg">
+    <meta name="twitter:site" content="@mimflix">
+    <title>MimFlix - মনোরঞ্জন প্ল্যাটফর্ম | Entertainment Platform</title>
+    <link rel="icon" href="./logo.svg" type="image/svg+xml">
+    <link href="https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@300;400;500;700&family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/remixicon@2.5.0/fonts/remixicon.css" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/react/17.0.2/umd/react.development.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/react-dom/17.0.2/umd/react-dom.development.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/babel-standalone/6.26.0/babel.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/react-router-dom/5.2.0/react-router-dom.min.js"></script>
 </head>
 <body>
-    <header class="bg-dark text-white p-3">
-        <div class="container d-flex justify-content-between align-items-center">
-            <img src="images/logo.svg" alt="MimFlix Logo" width="50">
-            <nav>
-                <a href="movies/index.html" class="text-white mx-2">Movies</a>
-                <a href="iptv/index.html" class="text-white mx-2">IPTV</a>
-                <a href="blogs/index.html" class="text-white mx-2">Blogs</a>
-                <a href="ftp/index.html" class="text-white mx-2">FTP</a>
-            </nav>
-        </div>
-    </header>
-    <main class="container my-5 text-center">
-        <h1>Welcome to MimFlix</h1>
-        <p>Your ultimate entertainment hub for Movies, IPTV, and Blogs.</p>
-    </main>
-    <footer class="bg-dark text-white text-center py-3">
-        <p>&copy; 2024 MimFlix. All Rights Reserved.</p>
-        <div>
-            <a href="#" class="text-white mx-2"><i class="fa fa-facebook"></i></a>
-            <a href="#" class="text-white mx-2"><i class="fa fa-twitter"></i></a>
-            <a href="#" class="text-white mx-2"><i class="fa fa-instagram"></i></a>
-        </div>
-    </footer>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <div id="root"></div>
+
+    <script type="text/babel">
+        const { BrowserRouter, Switch, Route, Link, useParams, useLocation } = ReactRouterDOM;
+
+        const LANG = {
+            bn: {
+                home: 'হোম',
+                movies: 'সিনেমা',
+                blogs: 'ব্লগ',
+                iptv: 'আইপিটিভি',
+                welcome: 'মিমফ্লিক্সে স্বাগতম',
+                description: 'আপনার সেরা মনোরঞ্জন গন্তব্য',
+                loadContent: 'বিষয়বস্তু লোড করুন'
+            },
+            en: {
+                home: 'Home',
+                movies: 'Movies',
+                blogs: 'Blogs',
+                iptv: 'IPTV',
+                welcome: 'Welcome to MimFlix',
+                description: 'Your ultimate entertainment destination',
+                loadContent: 'Load Content'
+            }
+        };
+
+        const CONTENT_TYPES = {
+            blogs: [
+                {
+                    id: 'tech-trends',
+                    title: 'Tech Entertainment Trends',
+                    category: 'Technology',
+                    readTime: '5 min read',
+                    content: `Explore the latest technological innovations transforming entertainment industry...`,
+                    tags: ['tech', 'innovation', 'entertainment']
+                },
+                {
+                    id: 'cinema-evolution',
+                    title: 'Digital Cinema Revolution',
+                    category: 'Film',
+                    readTime: '7 min read',
+                    content: `How digital platforms are reshaping modern cinema experiences...`,
+                    tags: ['cinema', 'digital', 'movies']
+                }
+            ],
+            movies: [
+                {
+                    id: 'sci-fi-collection',
+                    title: 'Science Fiction Masterpieces',
+                    genre: 'Sci-Fi',
+                    rating: 4.5,
+                    description: 'Curated collection of groundbreaking sci-fi movies...'
+                },
+                {
+                    id: 'indie-films',
+                    title: 'Independent Cinema Gems',
+                    genre: 'Independent',
+                    rating: 4.2,
+                    description: 'Discover hidden masterpieces from independent filmmakers...'
+                }
+            ]
+        };
+
+        const COLORS = {
+            primary: '#4a148c',
+            secondary: '#ff4081',
+            background: '#121212',
+            text: '#ffffff',
+            accent: '#7c4dff',
+        };
+
+        const BlogDetail = () => {
+            const { blogId } = useParams();
+            const blog = CONTENT_TYPES.blogs.find(b => b.id === blogId);
+
+            if (!blog) return <div>Blog Not Found</div>;
+
+            return (
+                <div className="blog-detail">
+                    <h2>{blog.title}</h2>
+                    <div className="blog-meta">
+                        <span>{blog.category}</span>
+                        <span>{blog.readTime}</span>
+                    </div>
+                    <p>{blog.content}</p>
+                    <div className="blog-tags">
+                        {blog.tags.map(tag => (
+                            <span key={tag} className="tag">{tag}</span>
+                        ))}
+                    </div>
+                </div>
+            );
+        };
+
+        const App = () => {
+            const [language, setLanguage] = React.useState('en');
+            const [activeSection, setActiveSection] = React.useState('home');
+            const [contentLoaded, setContentLoaded] = React.useState(false);
+            const location = useLocation();
+
+            React.useEffect(() => {
+                const path = location.pathname;
+                if (path === '/') setActiveSection('home');
+                else if (path.includes('/blogs')) setActiveSection('blogs');
+                else if (path.includes('/movies')) setActiveSection('movies');
+                else if (path.includes('/iptv')) setActiveSection('iptv');
+            }, [location]);
+
+            const toggleLanguage = () => {
+                setLanguage(language === 'en' ? 'bn' : 'en');
+            };
+
+            const currentLang = LANG[language];
+
+            const loadContent = () => {
+                setContentLoaded(true);
+            };
+
+            return (
+                <div className="app-container" style={{ backgroundColor: COLORS.background }}>
+                    <nav className="modern-navbar">
+                        <div className="navbar-brand">
+                            <img src="./logo.svg" alt="MimFlix Logo" className="navbar-logo" />
+                            <h1>MimFlix</h1>
+                        </div>
+                        <div className="navbar-menu">
+                            <Link 
+                                to="/" 
+                                className={`nav-item ${activeSection === 'home' ? 'active' : ''}`}
+                            >
+                                <i className="ri-home-line"></i> {currentLang.home}
+                            </Link>
+                            <Link 
+                                to="/movies" 
+                                className={`nav-item ${activeSection === 'movies' ? 'active' : ''}`}
+                            >
+                                <i className="ri-movie-line"></i> {currentLang.movies}
+                            </Link>
+                            <Link 
+                                to="/blogs" 
+                                className={`nav-item ${activeSection === 'blogs' ? 'active' : ''}`}
+                            >
+                                <i className="ri-article-line"></i> {currentLang.blogs}
+                            </Link>
+                            <Link 
+                                to="/iptv" 
+                                className={`nav-item ${activeSection === 'iptv' ? 'active' : ''}`}
+                            >
+                                <i className="ri-tv-line"></i> {currentLang.iptv}
+                            </Link>
+                        </div>
+                        <div className="navbar-actions">
+                            <button onClick={toggleLanguage} className="language-toggle">
+                                {language === 'en' ? 'বাংলা' : 'English'}
+                            </button>
+                        </div>
+                    </nav>
+
+                    <main className="content-wrapper">
+                        <button onClick={loadContent} className="done-button">{currentLang.loadContent}</button>
+                        {contentLoaded ? (
+                            <Switch>
+                                <Route exact path="/">
+                                    <HomePage language={language} />
+                                </Route>
+                                <Route exact path="/movies">
+                                    <MoviesPage language={language} />
+                                </Route>
+                                <Route exact path="/blogs">
+                                    <BlogsPage language={language} />
+                                </Route>
+                                <Route path="/blogs/:blogId">
+                                    <BlogDetail />
+                                </Route>
+                                <Route path="/iptv">
+                                    <IPTVPage language={language} />
+                                </Route>
+                            </Switch>
+                        ) : (
+                            <div>Loading content...</div>
+                        )}
+                    </main>
+
+                    <footer className="app-footer">
+                        <div className="footer-content">
+                            <p>© 2024 MimFlix. All Rights Reserved.</p>
+                            <div className="social-links">
+                                <a href="#" target="_blank" rel="noopener noreferrer">
+                                    <i className="ri-facebook-circle-fill"></i>
+                                </a>
+                                <a href="#" target="_blank" rel="noopener noreferrer">
+                                    <i className="ri-twitter-fill"></i>
+                                </a>
+                                <a href="#" target="_blank" rel="noopener noreferrer">
+                                    <i className="ri-instagram-fill"></i>
+                                </a>
+                            </div>
+                        </div>
+                    </footer>
+                </div>
+            );
+        };
+
+        const HomePage = ({ language }) => (
+            <div className="home-container">
+                <h1>{LANG[language].welcome}</h1>
+                <p>{LANG[language].description}</p>
+            </div>
+        );
+
+        const MoviesPage = ({ language }) => (
+            <div className="movies-container">
+                <h2>{LANG[language].movies}</h2>
+                {/* Movies content */}
+            </div>
+        );
+
+        const BlogsPage = ({ language }) => (
+            <div className="blogs-container">
+                <h2>{LANG[language].blogs}</h2>
+                {/* Blogs content */}
+            </div>
+        );
+
+        const IPTVPage = ({ language }) => (
+            <div className="iptv-container">
+                <h2>{LANG[language].iptv}</h2>
+                {/* IPTV content */}
+            </div>
+        );
+
+        ReactDOM.render(
+            <BrowserRouter>
+                <App />
+            </BrowserRouter>,
+            document.getElementById('root')
+        );
+    </script>
 </body>
 </html>
