@@ -1,267 +1,310 @@
 <!DOCTYPE html>
-<html lang="bn">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <meta name="description" content="MimFlix is your ultimate entertainment platform for movies, blogs, and IPTV. Get the best movies and stay updated with tech and cinema trends.">
-    <meta name="keywords" content="entertainment, movies, blogs, IPTV, tech trends, cinema revolution">
-    <meta name="author" content="MimFlix">
-    <meta property="og:title" content="MimFlix - Entertainment Platform">
-    <meta property="og:description" content="MimFlix is your ultimate destination for entertainment, featuring movies, blogs, and IPTV.">
-    <meta property="og:image" content="./logo.svg">
-    <meta property="og:url" content="https://www.mimflix.com">
-    <meta name="twitter:card" content="summary_large_image">
-    <meta name="twitter:title" content="MimFlix - Entertainment Platform">
-    <meta name="twitter:description" content="MimFlix offers the best in movies, blogs, and IPTV. Stay updated with the latest trends and enjoy endless entertainment.">
-    <meta name="twitter:image" content="./logo.svg">
-    <meta name="twitter:site" content="@mimflix">
-    <title>MimFlix - মনোরঞ্জন প্ল্যাটফর্ম | Entertainment Platform</title>
-    <link rel="icon" href="./logo.svg" type="image/svg+xml">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MimFlix - Advanced Entertainment Platform</title>
+    <!-- Google Fonts -->
     <link href="https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@300;400;500;700&family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
-    <link href="https://cdn.jsdelivr.net/npm/remixicon@2.5.0/fonts/remixicon.css" rel="stylesheet">
+    <!-- Normalize CSS -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/8.0.1/normalize.min.css">
+    <!-- Font Awesome for Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <!-- React and Babel -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/react/17.0.2/umd/react.development.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/react-dom/17.0.2/umd/react-dom.development.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/babel-standalone/6.26.0/babel.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/react-router-dom/5.2.0/react-router-dom.min.js"></script>
+    <style>
+        :root {
+            --primary-color: #1a73e8;
+            --secondary-color: #ff5722;
+            --background-color: #1c1c1e;
+            --text-color: #ffffff;
+            --font-family: 'Roboto', 'Hind Siliguri', sans-serif;
+        }
+
+        body, html {
+            margin: 0;
+            padding: 0;
+            font-family: var(--font-family);
+            background-color: var(--background-color);
+            color: var(--text-color);
+        }
+
+        .app-container {
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+
+        .app-bar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px 20px;
+            background-color: var(--primary-color);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+        }
+
+        .app-logo {
+            max-height: 40px;
+            margin-right: 10px;
+        }
+
+        .menu {
+            display: flex;
+            gap: 15px;
+        }
+
+        .menu button {
+            background: none;
+            border: none;
+            color: var(--text-color);
+            font-size: 1rem;
+            cursor: pointer;
+        }
+
+        .content {
+            flex-grow: 1;
+            padding: 20px;
+        }
+
+        .footer {
+            text-align: center;
+            padding: 10px;
+            background-color: var(--primary-color);
+        }
+
+        .card {
+            background: var(--secondary-color);
+            padding: 15px;
+            border-radius: 5px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            margin: 10px;
+        }
+
+        .floating-icons {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .floating-icons a {
+            background-color: var(--primary-color);
+            color: var(--text-color);
+            padding: 10px;
+            border-radius: 50%;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            font-size: 20px;
+            text-align: center;
+            transition: background-color 0.3s ease;
+        }
+
+        .floating-icons a:hover {
+            background-color: var(--secondary-color);
+        }
+
+        .popup {
+            position: fixed;
+            bottom: 80px;
+            right: 20px;
+            background-color: var(--background-color);
+            color: var(--text-color);
+            padding: 15px;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            display: none;
+        }
+
+        .popup.show {
+            display: block;
+        }
+
+        .loader {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100%;
+        }
+    </style>
 </head>
 <body>
     <div id="root"></div>
 
     <script type="text/babel">
-        const { BrowserRouter, Switch, Route, Link, useParams, useLocation } = ReactRouterDOM;
+        const { BrowserRouter, Route, Switch, Link } = ReactRouterDOM;
 
-        const LANG = {
-            bn: {
-                home: 'হোম',
-                movies: 'সিনেমা',
-                blogs: 'ব্লগ',
-                iptv: 'আইপিটিভি',
-                welcome: 'মিমফ্লিক্সে স্বাগতম',
-                description: 'আপনার সেরা মনোরঞ্জন গন্তব্য',
-                loadContent: 'বিষয়বস্তু লোড করুন'
-            },
-            en: {
-                home: 'Home',
-                movies: 'Movies',
-                blogs: 'Blogs',
-                iptv: 'IPTV',
-                welcome: 'Welcome to MimFlix',
-                description: 'Your ultimate entertainment destination',
-                loadContent: 'Load Content'
-            }
+        const fetchAPI = (endpoint) =>
+            new Promise((resolve) => {
+                setTimeout(() => {
+                    const data = {
+                        movies: [
+                            { id: 1, title: "Inception", description: "A dream within a dream." },
+                            { id: 2, title: "Interstellar", description: "Exploration beyond galaxies." },
+                        ],
+                        blogs: [
+                            { id: 1, title: "Tech Trends", description: "The latest in technology." },
+                            { id: 2, title: "Web Design", description: "Modern design principles." },
+                        ],
+                        iptv: [
+                            { id: 1, title: "News Channel", description: "24/7 news." },
+                            { id: 2, title: "Sports Channel", description: "Live sports action." },
+                        ],
+                    };
+                    resolve(data[endpoint]);
+                }, 1000);
+            });
+
+        const Loader = () => <div className="loader">Loading...</div>;
+
+        const HomePage = () => (
+            <div>
+                <h2>Welcome to MimFlix</h2>
+                <p>Your ultimate entertainment destination.</p>
+            </div>
+        );
+
+        const MoviesPage = () => {
+            const [movies, setMovies] = React.useState([]);
+            const [loading, setLoading] = React.useState(true);
+
+            React.useEffect(() => {
+                fetchAPI("movies").then((data) => {
+                    setMovies(data);
+                    setLoading(false);
+                });
+            }, []);
+
+            return loading ? (
+                <Loader />
+            ) : (
+                <div>
+                    <h2>Movies</h2>
+                    {movies.map((movie) => (
+                        <div className="card" key={movie.id}>
+                            <h3>{movie.title}</h3>
+                            <p>{movie.description}</p>
+                        </div>
+                    ))}
+                </div>
+            );
         };
 
-        const CONTENT_TYPES = {
-            blogs: [
-                {
-                    id: 'tech-trends',
-                    title: 'Tech Entertainment Trends',
-                    category: 'Technology',
-                    readTime: '5 min read',
-                    content: `Explore the latest technological innovations transforming entertainment industry...`,
-                    tags: ['tech', 'innovation', 'entertainment']
-                },
-                {
-                    id: 'cinema-evolution',
-                    title: 'Digital Cinema Revolution',
-                    category: 'Film',
-                    readTime: '7 min read',
-                    content: `How digital platforms are reshaping modern cinema experiences...`,
-                    tags: ['cinema', 'digital', 'movies']
-                }
-            ],
-            movies: [
-                {
-                    id: 'sci-fi-collection',
-                    title: 'Science Fiction Masterpieces',
-                    genre: 'Sci-Fi',
-                    rating: 4.5,
-                    description: 'Curated collection of groundbreaking sci-fi movies...'
-                },
-                {
-                    id: 'indie-films',
-                    title: 'Independent Cinema Gems',
-                    genre: 'Independent',
-                    rating: 4.2,
-                    description: 'Discover hidden masterpieces from independent filmmakers...'
-                }
-            ]
+        const BlogsPage = () => {
+            const [blogs, setBlogs] = React.useState([]);
+            const [loading, setLoading] = React.useState(true);
+
+            React.useEffect(() => {
+                fetchAPI("blogs").then((data) => {
+                    setBlogs(data);
+                    setLoading(false);
+                });
+            }, []);
+
+            return loading ? (
+                <Loader />
+            ) : (
+                <div>
+                    <h2>Blogs</h2>
+                    {blogs.map((blog) => (
+                        <div className="card" key={blog.id}>
+                            <h3>{blog.title}</h3>
+                            <p>{blog.description}</p>
+                        </div>
+                    ))}
+                </div>
+            );
         };
 
-        const COLORS = {
-            primary: '#4a148c',
-            secondary: '#ff4081',
-            background: '#121212',
-            text: '#ffffff',
-            accent: '#7c4dff',
-        };
+        const IPTVPage = () => {
+            const [iptvChannels, setIptvChannels] = React.useState([]);
+            const [loading, setLoading] = React.useState(true);
 
-        const BlogDetail = () => {
-            const { blogId } = useParams();
-            const blog = CONTENT_TYPES.blogs.find(b => b.id === blogId);
+            React.useEffect(() => {
+                fetchAPI("iptv").then((data) => {
+                    setIptvChannels(data);
+                    setLoading(false);
+                });
+            }, []);
 
-            if (!blog) return <div>Blog Not Found</div>;
-
-            return (
-                <div className="blog-detail">
-                    <h2>{blog.title}</h2>
-                    <div className="blog-meta">
-                        <span>{blog.category}</span>
-                        <span>{blog.readTime}</span>
-                    </div>
-                    <p>{blog.content}</p>
-                    <div className="blog-tags">
-                        {blog.tags.map(tag => (
-                            <span key={tag} className="tag">{tag}</span>
-                        ))}
-                    </div>
+            return loading ? (
+                <Loader />
+            ) : (
+                <div>
+                    <h2>IPTV Channels</h2>
+                    {iptvChannels.map((channel) => (
+                        <div className="card" key={channel.id}>
+                            <h3>{channel.title}</h3>
+                            <p>{channel.description}</p>
+                        </div>
+                    ))}
                 </div>
             );
         };
 
         const App = () => {
-            const [language, setLanguage] = React.useState('en');
-            const [activeSection, setActiveSection] = React.useState('home');
-            const [contentLoaded, setContentLoaded] = React.useState(false);
-            const location = useLocation();
-
-            React.useEffect(() => {
-                const path = location.pathname;
-                if (path === '/') setActiveSection('home');
-                else if (path.includes('/blogs')) setActiveSection('blogs');
-                else if (path.includes('/movies')) setActiveSection('movies');
-                else if (path.includes('/iptv')) setActiveSection('iptv');
-            }, [location]);
-
-            const toggleLanguage = () => {
-                setLanguage(language === 'en' ? 'bn' : 'en');
-            };
-
-            const currentLang = LANG[language];
-
-            const loadContent = () => {
-                setContentLoaded(true);
-            };
+            const [showPopup, setShowPopup] = React.useState(false);
 
             return (
-                <div className="app-container" style={{ backgroundColor: COLORS.background }}>
-                    <nav className="modern-navbar">
-                        <div className="navbar-brand">
-                            <img src="./logo.svg" alt="MimFlix Logo" className="navbar-logo" />
-                            <h1>MimFlix</h1>
-                        </div>
-                        <div className="navbar-menu">
-                            <Link 
-                                to="/" 
-                                className={`nav-item ${activeSection === 'home' ? 'active' : ''}`}
+                <BrowserRouter>
+                    <div className="app-container">
+                        <header className="app-bar">
+                            <div className="logo">
+                                <img src="./logo.svg" alt="MimFlix Logo" className="app-logo" />
+                                <h1>MimFlix</h1>
+                            </div>
+                            <nav className="menu">
+                                <Link to="/">Home</Link>
+                                <Link to="/movies">Movies</Link>
+                                <Link to="/blogs">Blogs</Link>
+                                <Link to="/iptv">IPTV</Link>
+                            </nav>
+                        </header>
+                        <main className="content">
+                            <Switch>
+                                <Route exact path="/" component={HomePage} />
+                                <Route path="/movies" component={MoviesPage} />
+                                <Route path="/blogs" component={BlogsPage} />
+                                <Route path="/iptv" component={IPTVPage} />
+                            </Switch>
+                        </main>
+                        <footer className="footer">
+                            <p>© 2024 MimFlix. All Rights Reserved.</p>
+                        </footer>
+
+                        <div className="floating-icons">
+                            <a href="https://t.me/RektDevelopers" target="_blank" title="Contact Developers">
+                                <i className="fab fa-telegram-plane"></i>
+                            </a>
+                            <button
+                                className="popup-button"
+                                onClick={() => setShowPopup(!showPopup)}
                             >
-                                <i className="ri-home-line"></i> {currentLang.home}
-                            </Link>
-                            <Link 
-                                to="/movies" 
-                                className={`nav-item ${activeSection === 'movies' ? 'active' : ''}`}
-                            >
-                                <i className="ri-movie-line"></i> {currentLang.movies}
-                            </Link>
-                            <Link 
-                                to="/blogs" 
-                                className={`nav-item ${activeSection === 'blogs' ? 'active' : ''}`}
-                            >
-                                <i className="ri-article-line"></i> {currentLang.blogs}
-                            </Link>
-                            <Link 
-                                to="/iptv" 
-                                className={`nav-item ${activeSection === 'iptv' ? 'active' : ''}`}
-                            >
-                                <i className="ri-tv-line"></i> {currentLang.iptv}
-                            </Link>
-                        </div>
-                        <div className="navbar-actions">
-                            <button onClick={toggleLanguage} className="language-toggle">
-                                {language === 'en' ? 'বাংলা' : 'English'}
+                                <i className="fas fa-envelope"></i>
                             </button>
                         </div>
-                    </nav>
 
-                    <main className="content-wrapper">
-                        <button onClick={loadContent} className="done-button">{currentLang.loadContent}</button>
-                        {contentLoaded ? (
-                            <Switch>
-                                <Route exact path="/">
-                                    <HomePage language={language} />
-                                </Route>
-                                <Route exact path="/movies">
-                                    <MoviesPage language={language} />
-                                </Route>
-                                <Route exact path="/blogs">
-                                    <BlogsPage language={language} />
-                                </Route>
-                                <Route path="/blogs/:blogId">
-                                    <BlogDetail />
-                                </Route>
-                                <Route path="/iptv">
-                                    <IPTVPage language={language} />
-                                </Route>
-                            </Switch>
-                        ) : (
-                            <div>Loading content...</div>
-                        )}
-                    </main>
-
-                    <footer className="app-footer">
-                        <div className="footer-content">
-                            <p>© 2024 MimFlix. All Rights Reserved.</p>
-                            <div className="social-links">
-                                <a href="#" target="_blank" rel="noopener noreferrer">
-                                    <i className="ri-facebook-circle-fill"></i>
-                                </a>
-                                <a href="#" target="_blank" rel="noopener noreferrer">
-                                    <i className="ri-twitter-fill"></i>
-                                </a>
-                                <a href="#" target="_blank" rel="noopener noreferrer">
-                                    <i className="ri-instagram-fill"></i>
-                                </a>
-                            </div>
+                        <div className={`popup ${showPopup ? "show" : ""}`}>
+                            <h3>Support MimFlix</h3>
+                            <p>Drop a message to the developers or send your feedback!</p>
                         </div>
-                    </footer>
-                </div>
+                    </div>
+                </BrowserRouter>
             );
         };
 
-        const HomePage = ({ language }) => (
-            <div className="home-container">
-                <h1>{LANG[language].welcome}</h1>
-                <p>{LANG[language].description}</p>
-            </div>
-        );
-
-        const MoviesPage = ({ language }) => (
-            <div className="movies-container">
-                <h2>{LANG[language].movies}</h2>
-                {/* Movies content */}
-            </div>
-        );
-
-        const BlogsPage = ({ language }) => (
-            <div className="blogs-container">
-                <h2>{LANG[language].blogs}</h2>
-                {/* Blogs content */}
-            </div>
-        );
-
-        const IPTVPage = ({ language }) => (
-            <div className="iptv-container">
-                <h2>{LANG[language].iptv}</h2>
-                {/* IPTV content */}
-            </div>
-        );
-
-        ReactDOM.render(
-            <BrowserRouter>
-                <App />
-            </BrowserRouter>,
-            document.getElementById('root')
-        );
+        ReactDOM.render(<App />, document.getElementById("root"));
     </script>
 </body>
 </html>
